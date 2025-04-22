@@ -1,34 +1,50 @@
-Perfect. Here's a complete project setup for a Wi-Fi drone using Arduino + Raspberry Pi with real-time HD video streaming, full control over WebSocket or joystick, and the flexibility to add GPS, IMU, and telemetry.
+import React from 'react';
 
-### 🚁 Drone Architecture: Arduino + Raspberry Pi Video Drone
-### ✅ What this build does:
-### 🧠 Arduino handles flight control (IMU, PWM to ESCs)
+# 🚁 Wi-Fi Drone with Arduino + Raspberry Pi
 
-## 🎥 Raspberry Pi handles camera + Wi-Fi + joystick/WebSocket
+A complete project setup for a real-time HD video streaming drone with full flight control using Arduino + Raspberry Pi. Add GPS, IMU, and telemetry with modular flexibility.
 
-## 💻 Laptop with directional Wi-Fi connects to Pi, streams video, sends control commands
+---
 
-### 📦 Components Required
+## ✅ What This Build Does
+
+- 🧠 **Arduino**: Flight control using IMU and ESC PWM
+- 🎥 **Raspberry Pi**: Handles video streaming + joystick/WebSocket control
+- 💻 **Laptop**: Connects over Wi-Fi, receives stream, sends commands
+
+---
+
+## 📦 Components Required
+
 ### 🎯 Flight Control Side (Arduino-based)
 
-## Component	Purpose
-- Arduino Mega / Nano	Handles IMU + PWM motor output
-- MPU6050	IMU sensor (gyro + accel)
-- GPS Module (optional)	NEO-6M or BN-880
-- 4x ESC (or 4-in-1)	BLHeli_32, controlled via PWM
-- Brushless Motors	2207 2450KV (for 5” props)
-- 5" Frame + Props	Carbon fiber recommended
-- Battery	4S 1500–2200mAh LiPo
-- UBEC (5V Regulator)	For Arduino + Pi power safety
-## 🎥 Video + Wi-Fi Side (Raspberry Pi)
+| Component | Purpose |
+|----------|---------|
+| Arduino Mega / Nano | Handles IMU + PWM motor output |
+| MPU6050 | IMU sensor (gyro + accel) |
+| GPS Module (optional) | NEO-6M or BN-880 |
+| 4x ESC (or 4-in-1) | BLHeli_32, controlled via PWM |
+| Brushless Motors | 2207 2450KV (for 5” props) |
+| 5" Frame + Props | Carbon fiber recommended |
+| Battery | 4S 1500–2200mAh LiPo |
+| UBEC (5V Regulator) | Powers Arduino + Pi safely |
 
-### Component	Purpose
-- Raspberry Pi 4 (2GB or 4GB)	Camera stream + Wi-Fi communication
-- Pi Camera V2 / USB Webcam	720p–1080p video
-- Dual-band USB Wi-Fi adapter	Connects to directional antenna
-- Battery Power (5V 3A)	Use step-down converter from LiPo
-## 🔗 Wiring Diagram (Overview)
-```css
+---
+
+### 🎥 Video + Wi-Fi Side (Raspberry Pi)
+
+| Component | Purpose |
+|----------|---------|
+| Raspberry Pi 4 (2GB or 4GB) | Camera stream + Wi-Fi comm |
+| Pi Camera V2 / USB Webcam | 720p–1080p video |
+| Dual-band USB Wi-Fi Adapter | For long-range directional antenna |
+| Battery Power (5V 3A) | Use step-down from LiPo |
+
+---
+
+## 🔗 Wiring Diagram Overview
+
+```plaintext
 [ Raspberry Pi ]
   └── USB Wi-Fi + Camera
   └── UART TX/RX to Arduino
@@ -38,6 +54,7 @@ Perfect. Here's a complete project setup for a Wi-Fi drone using Arduino + Raspb
   └── ESCs via PWM (D3, D5, D6, D9)
   └── GPS (optional via Serial)
 ```
+
 ### 🖥️ Raspberry Pi Software Setup
 - 1. Install MJPEG-Streamer for Live Camera
 ```bash
@@ -49,11 +66,9 @@ make
 ```
 View video in browser at: http://<drone-ip>:8080
 
-- 2. Setup WebSocket Server (Python or Node.js)
-Sends control data from joystick to Arduino via UART.
-
+- 2. Setup WebSocket Server (Python)
 ```python
-# ws_to_serial.py (Python)
+# ws_to_serial.py
 import asyncio, websockets, serial
 
 arduino = serial.Serial("/dev/ttyS0", 57600)
@@ -64,11 +79,10 @@ async def handler(websocket):
         arduino.write((message + "\n").encode())
 
 start_server = websockets.serve(handler, "0.0.0.0", 8765)
-
 asyncio.get_event_loop().run_until_complete(start_server)
 asyncio.get_event_loop().run_forever()
 ```
-- Run with:
+- Run it with:
 
 ```bash
 pip3 install pyserial websockets
@@ -106,7 +120,6 @@ void loop() {
   }
 }
 ```
-
 ### 🎮 Web Joystick Controller (HTML/JS)
 ```html
 <script>
@@ -122,23 +135,26 @@ setInterval(() => {
 }, 50);
 </script>
 ```
-## ✅ Optional: Add Dashboard
-- Show live MJPEG feed
+### ✅ Optional: Add Dashboard
+Show live MJPEG feed
 
-- Show GPS + battery (send JSON from Arduino)
+Show GPS + battery (send JSON from Arduino)
 
-- Add a map (Leaflet.js) for live GPS
+Add map (e.g., Leaflet.js) for GPS location
 
-##📦 Project Summary
+### 📦 Project Summary
 
-### Part	Use
+## Part	Use
 Arduino Mega	Motor control, IMU, PWM
 Raspberry Pi 4	Video + control relay
 Wi-Fi + Antenna	Long-range link
 Joystick / Browser UI	Pilot controls
 Camera	Live stream (via MJPEG or RTSP)
+## 🛠️ Would You Like:
+✅ As a downloadable package?
 
-- Would you like this entire setup:
-##### ✅ As a downloadable package?
-##### ✅ With a full HTML dashboard + telemetry page?
-##### ✅ With real-time motor feedback via Web UI?
+✅ With a full HTML dashboard + telemetry page?
+
+✅ With real-time motor feedback via Web UI?
+
+Let me know, and I’ll package it up for you! 🚀
